@@ -1,0 +1,29 @@
+{
+  "name": "what-to-wear-right-now",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Do I need a jacket, umbrella, shorts, or a sweater? A hyper-focused weather dashboard plus a daily Telegram outfit alert.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "node --test",
+    "alert": "node --env-file-if-exists=.env scripts/daily-alert.js",
+    "alert:dry": "node --env-file-if-exists=.env scripts/daily-alert.js --dry-run"
+  },
+  "dependencies": {
+    "lucide-react": "^1.45.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@vitejs/plugin-react": "^6.1.1",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.3.0"
+  }
+}

@@ -1,0 +1,40 @@
+name: Morning Outfit Alert
+
+on:
+  schedule:
+    # Cron is always UTC. 11:00 UTC = 7:00 AM EDT, which becomes 6:00 AM once EST starts in November.
+    # GitHub can delay scheduled runs when it's busy, especially at the top of the hour.
+    - cron: '0 11 * * *'
+  workflow_dispatch: # adds a "Run workflow" button to the Actions tab for testing
+
+permissions:
+  contents: read
+
+jobs:
+  send-alert:
+    name: Send outfit check to Telegram
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      # No `npm install` needed: the alert only uses native fetch and the dependency-free shared logic.
+      - name: Send morning alert
+        run: node scripts/daily-alert.js
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          LATITUDE: ${{ secrets.LATITUDE }}
+          LONGITUDE: ${{ secrets.LONGITUDE }}
+          # Optional: Settings → Secrets and variables → Actions → Variables tab.
+          TEMP_UNIT: ${{ vars.TEMP_UNIT }} # F (default) or C
+          LOCATION_NAME: ${{ vars.LOCATION_NAME }} # e.g. New York
+          TOLERANCE: ${{ vars.TOLERANCE }} # cold, normal (default), or warm

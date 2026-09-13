@@ -1,0 +1,11 @@
+node_modules
+dist
+*.log
+
+# Local secrets for `npm run alert`
+.env
+.env.*
+!.env.example
+
+.DS_Store
+Thumbs.db
